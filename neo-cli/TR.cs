@@ -52,8 +52,7 @@ namespace DbgViewTR
         public static void enter()
         {
 #if DEBUG
-            StackTrace st = new StackTrace(true);
-            StackFrame sf = st.GetFrame(1);
+            StackFrame sf = new StackFrame(1, true);
             DbgData dd = new DbgData(sf);
             log(dd, ">");
 #endif
@@ -62,8 +61,7 @@ namespace DbgViewTR
         public static void exit()
         {
 #if DEBUG
-            StackTrace st = new StackTrace(true);
-            StackFrame sf = st.GetFrame(1);
+            StackFrame sf = new StackFrame(1, true);
             DbgData dd = new DbgData(sf);
             log(dd, "<");
 #endif
@@ -72,8 +70,7 @@ namespace DbgViewTR
         public static T exit<T>(T result)
         {
 #if DEBUG
-            StackTrace st = new StackTrace(true);
-            StackFrame sf = st.GetFrame(1);
+            StackFrame sf = new StackFrame(1, true);
             DbgData dd = new DbgData(sf);
             log(dd, "return {0}", result?.ToString());
             log(dd, "<");
@@ -84,8 +81,7 @@ namespace DbgViewTR
         public static void log(string format, params object[] args)
         {
 #if DEBUG
-            StackTrace st = new StackTrace(true);
-            StackFrame sf = st.GetFrame(1);
+            StackFrame sf = new StackFrame(1, true);
             DbgData dd = new DbgData(sf);
             log(dd, format, args);
 #endif
@@ -94,8 +90,7 @@ namespace DbgViewTR
         public static void log()
         {
 #if DEBUG
-            StackTrace st = new StackTrace(true);
-            StackFrame sf = st.GetFrame(1);
+            StackFrame sf = new StackFrame(1, true);
             DbgData dd = new DbgData(sf);
             log(dd, "");
 #endif
