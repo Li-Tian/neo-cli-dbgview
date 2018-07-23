@@ -1,4 +1,5 @@
-﻿using Neo.Network;
+﻿using DbgViewTR;
+using Neo.Network;
 using Neo.Wallets;
 using System;
 using System.IO;
@@ -12,11 +13,14 @@ namespace Neo.Consensus
         public ConsensusWithLog(LocalNode localNode, Wallet wallet, string log_dictionary)
             : base(localNode, wallet)
         {
+            TR.enter();
             this.log_dictionary = log_dictionary;
+            TR.exit();
         }
 
         protected override void Log(string message)
         {
+            TR.enter();
             DateTime now = DateTime.Now;
             string line = $"[{now.TimeOfDay:hh\\:mm\\:ss}] {message}";
             Console.WriteLine(line);
@@ -27,6 +31,7 @@ namespace Neo.Consensus
                 string path = Path.Combine(log_dictionary, $"{now:yyyy-MM-dd}.log");
                 File.AppendAllLines(path, new[] { line });
             }
+            TR.exit();
         }
     }
 }

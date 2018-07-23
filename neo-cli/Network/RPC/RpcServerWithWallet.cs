@@ -1,4 +1,5 @@
-﻿using Neo.Core;
+﻿using DbgViewTR;
+using Neo.Core;
 using Neo.Implementations.Wallets.NEP6;
 using Neo.IO;
 using Neo.IO.Json;
@@ -15,19 +16,23 @@ namespace Neo.Network.RPC
         public RpcServerWithWallet(LocalNode localNode)
             : base(localNode)
         {
+            TR.log();
         }
 
         protected override JObject Process(string method, JArray _params)
         {
+            TR.enter();
             switch (method)
             {
                 case "getapplicationlog":
                     {
                         UInt256 hash = UInt256.Parse(_params[0].AsString());
                         string path = Path.Combine(Settings.Default.Paths.ApplicationLogs, $"{hash}.json");
-                        return File.Exists(path)
+                        return TR.exit(
+                            File.Exists(path)
                             ? JObject.Parse(File.ReadAllText(path))
-                            : throw new RpcException(-100, "Unknown transaction");
+                            : throw new RpcException(-100, "Unknown transaction")
+                            );
                     }
                 case "getbalance":
                     if (Program.Wallet == null)
@@ -46,13 +51,13 @@ namespace Neo.Network.RPC
                                 json["confirmed"] = coins.Where(p => p.State.HasFlag(CoinState.Confirmed)).Sum(p => p.Output.Value).ToString();
                                 break;
                         }
-                        return json;
+                        return TR.exit(json);
                     }
                 case "listaddress":
                     if (Program.Wallet == null)
                         throw new RpcException(-400, "Access denied.");
                     else
-                        return Program.Wallet.GetAccounts().Select(p =>
+                        return TR.exit(Program.Wallet.GetAccounts().Select(p =>
                         {
                             JObject account = new JObject();
                             account["address"] = p.Address;
@@ -60,7 +65,7 @@ namespace Neo.Network.RPC
                             account["label"] = p.Label;
                             account["watchonly"] = p.WatchOnly;
                             return account;
-                        }).ToArray();
+                        }).ToArray());
                 case "sendfrom":
                     if (Program.Wallet == null)
                         throw new RpcException(-400, "Access denied");
@@ -95,11 +100,11 @@ namespace Neo.Network.RPC
                             tx.Scripts = context.GetScripts();
                             Program.Wallet.ApplyTransaction(tx);
                             LocalNode.Relay(tx);
-                            return tx.ToJson();
+                            return TR.exit(tx.ToJson());
                         }
                         else
                         {
-                            return context.ToJson();
+                            return TR.exit(context.ToJson());
                         }
                     }
                 case "sendtoaddress":
@@ -135,11 +140,11 @@ namespace Neo.Network.RPC
                             tx.Scripts = context.GetScripts();
                             Program.Wallet.ApplyTransaction(tx);
                             LocalNode.Relay(tx);
-                            return tx.ToJson();
+                            return TR.exit(tx.ToJson());
                         }
                         else
                         {
-                            return context.ToJson();
+                            return TR.exit(context.ToJson());
                         }
                     }
                 case "sendmany":
@@ -178,11 +183,11 @@ namespace Neo.Network.RPC
                             tx.Scripts = context.GetScripts();
                             Program.Wallet.ApplyTransaction(tx);
                             LocalNode.Relay(tx);
-                            return tx.ToJson();
+                            return TR.exit(tx.ToJson());
                         }
                         else
                         {
-                            return context.ToJson();
+                            return TR.exit(context.ToJson());
                         }
                     }
                 case "getnewaddress":
@@ -193,7 +198,7 @@ namespace Neo.Network.RPC
                         WalletAccount account = Program.Wallet.CreateAccount();
                         if (Program.Wallet is NEP6Wallet wallet)
                             wallet.Save();
-                        return account.Address;
+                        return TR.exit(account.Address);
                     }
                 case "dumpprivkey":
                     if (Program.Wallet == null)
@@ -202,7 +207,7 @@ namespace Neo.Network.RPC
                     {
                         UInt160 scriptHash = Wallet.ToScriptHash(_params[0].AsString());
                         WalletAccount account = Program.Wallet.GetAccount(scriptHash);
-                        return account.GetKey().Export();
+                        return TR.exit(account.GetKey().Export());
                     }
                 case "invoke":
                 case "invokefunction":
@@ -231,9 +236,9 @@ namespace Neo.Network.RPC
                         }
                         result["tx"] = tx?.ToArray().ToHexString();
                     }
-                    return result;
+                    return TR.exit(result);
                 default:
-                    return base.Process(method, _params);
+                    return TR.exit(base.Process(method, _params));
             }
         }
     }

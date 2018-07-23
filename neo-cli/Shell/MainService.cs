@@ -66,37 +66,37 @@ namespace Neo.Shell
             switch (args[0].ToLower())
             {
                 case "broadcast":
-                    return OnBroadcastCommand(args);
+                    return TR.exit(OnBroadcastCommand(args));
                 case "relay":
-                    return OnRelayCommand(args);
+                    return TR.exit(OnRelayCommand(args));
                 case "sign":
-                    return OnSignCommand(args);
+                    return TR.exit(OnSignCommand(args));
                 case "create":
-                    return OnCreateCommand(args);
+                    return TR.exit(OnCreateCommand(args));
                 case "export":
-                    return OnExportCommand(args);
+                    return TR.exit(OnExportCommand(args));
                 case "help":
-                    return OnHelpCommand(args);
+                    return TR.exit(OnHelpCommand(args));
                 case "import":
-                    return OnImportCommand(args);
+                    return TR.exit(OnImportCommand(args));
                 case "list":
-                    return OnListCommand(args);
+                    return TR.exit(OnListCommand(args));
                 case "claim":
-                    return OnClaimCommand(args);
+                    return TR.exit(OnClaimCommand(args));
                 case "open":
-                    return OnOpenCommand(args);
+                    return TR.exit(OnOpenCommand(args));
                 case "rebuild":
-                    return OnRebuildCommand(args);
+                    return TR.exit(OnRebuildCommand(args));
                 case "send":
-                    return OnSendCommand(args);
+                    return TR.exit(OnSendCommand(args));
                 case "show":
-                    return OnShowCommand(args);
+                    return TR.exit(OnShowCommand(args));
                 case "start":
-                    return OnStartCommand(args);
+                    return TR.exit(OnStartCommand(args));
                 case "upgrade":
-                    return OnUpgradeCommand(args);
+                    return TR.exit(OnUpgradeCommand(args));
                 default:
-                    return base.OnCommand(args);
+                    return TR.exit(base.OnCommand(args));
             }
         }
 
