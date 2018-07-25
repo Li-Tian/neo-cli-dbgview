@@ -13,14 +13,14 @@ namespace Neo.Consensus
         public ConsensusWithLog(LocalNode localNode, Wallet wallet, string log_dictionary)
             : base(localNode, wallet)
         {
-            TR.enter();
+            TR.Enter();
             this.log_dictionary = log_dictionary;
-            TR.exit();
+            TR.Exit();
         }
 
         protected override void Log(string message)
         {
-            TR.enter();
+            TR.Enter();
             DateTime now = DateTime.Now;
             string line = $"[{now.TimeOfDay:hh\\:mm\\:ss}] {message}";
             Console.WriteLine(line);
@@ -31,7 +31,7 @@ namespace Neo.Consensus
                 string path = Path.Combine(log_dictionary, $"{now:yyyy-MM-dd}.log");
                 File.AppendAllLines(path, new[] { line });
             }
-            TR.exit();
+            TR.Exit();
         }
     }
 }

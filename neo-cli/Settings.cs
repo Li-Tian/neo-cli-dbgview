@@ -15,20 +15,20 @@ namespace Neo
 
         static Settings()
         {
-            TR.enter();
+            TR.Enter();
             IConfigurationSection section = new ConfigurationBuilder().AddJsonFile("config.json").Build().GetSection("ApplicationConfiguration");
             Default = new Settings(section);
-            TR.exit();
+            TR.Exit();
         }
 
         public Settings(IConfigurationSection section)
         {
-            TR.enter();
+            TR.Enter();
             this.Paths = new PathsSettings(section.GetSection("Paths"));
             this.P2P = new P2PSettings(section.GetSection("P2P"));
             this.RPC = new RPCSettings(section.GetSection("RPC"));
             this.UnlockWallet = new UnlockWalletSettings(section.GetSection("UnlockWallet"));
-            TR.exit();
+            TR.Exit();
         }
     }
 
@@ -39,10 +39,10 @@ namespace Neo
 
         public PathsSettings(IConfigurationSection section)
         {
-            TR.enter();
+            TR.Enter();
             this.Chain = string.Format(section.GetSection("Chain").Value, Message.Magic.ToString("X8"));
             this.ApplicationLogs = string.Format(section.GetSection("ApplicationLogs").Value, Message.Magic.ToString("X8"));
-            TR.exit();
+            TR.Exit();
         }
     }
 
@@ -53,10 +53,10 @@ namespace Neo
 
         public P2PSettings(IConfigurationSection section)
         {
-            TR.enter();
+            TR.Enter();
             this.Port = ushort.Parse(section.GetSection("Port").Value);
             this.WsPort = ushort.Parse(section.GetSection("WsPort").Value);
-            TR.exit();
+            TR.Exit();
         }
     }
 
@@ -68,11 +68,11 @@ namespace Neo
 
         public RPCSettings(IConfigurationSection section)
         {
-            TR.enter();
+            TR.Enter();
             this.Port = ushort.Parse(section.GetSection("Port").Value);
             this.SslCert = section.GetSection("SslCert").Value;
             this.SslCertPassword = section.GetSection("SslCertPassword").Value;
-            TR.exit();
+            TR.Exit();
         }
     }
 
@@ -85,7 +85,7 @@ namespace Neo
 
         public UnlockWalletSettings(IConfigurationSection section)
         {
-            TR.enter();
+            TR.Enter();
             if (section.Value != null)
             {
                 this.Path = section.GetSection("WalletPath").Value;
@@ -93,7 +93,7 @@ namespace Neo
                 this.StartConsensus = bool.Parse(section.GetSection("StartConsensus").Value);
                 this.IsActive = bool.Parse(section.GetSection("IsActive").Value);
             }
-            TR.exit();
+            TR.Exit();
         }
     }
 }

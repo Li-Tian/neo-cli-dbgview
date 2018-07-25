@@ -16,15 +16,15 @@ namespace Neo.Shell
 
         public Coins(Wallet wallet, LocalNode node)
         {
-            TR.enter();
+            TR.Enter();
             current_wallet = wallet;
             local_node = node;
-            TR.exit();
+            TR.Exit();
         }
 
         public Fixed8 UnavailableBonus()
         {
-            TR.enter();
+            TR.Enter();
             uint height = Blockchain.Default.Height + 1;
             Fixed8 unavailable;
 
@@ -37,29 +37,29 @@ namespace Neo.Shell
                 unavailable = Fixed8.Zero;
             }
 
-            return TR.exit(unavailable);
+            return TR.Exit(unavailable);
         }
 
 
         public Fixed8 AvailableBonus()
         {
-            TR.enter();
-            return TR.exit(Blockchain.CalculateBonus(current_wallet.GetUnclaimedCoins().Select(p => p.Reference)));
+            TR.Enter();
+            return TR.Exit(Blockchain.CalculateBonus(current_wallet.GetUnclaimedCoins().Select(p => p.Reference)));
         }
 
 
         public ClaimTransaction Claim()
         {
-            TR.enter();
+            TR.Enter();
 
             if (this.AvailableBonus() == Fixed8.Zero)
             {
                 Console.WriteLine($"no gas to claim");
-                return TR.exit((ClaimTransaction) null);
+                return TR.Exit((ClaimTransaction) null);
             }
 
             CoinReference[] claims = current_wallet.GetUnclaimedCoins().Select(p => p.Reference).ToArray();
-            if (claims.Length == 0) return TR.exit((ClaimTransaction)null);
+            if (claims.Length == 0) return TR.Exit((ClaimTransaction)null);
 
             ClaimTransaction tx = new ClaimTransaction
             {
@@ -78,17 +78,17 @@ namespace Neo.Shell
 
             };
 
-            return TR.exit((ClaimTransaction)SignTransaction(tx));
+            return TR.Exit((ClaimTransaction)SignTransaction(tx));
         }
 
 
         private Transaction SignTransaction(Transaction tx)
         {
-            TR.enter();
+            TR.Enter();
             if (tx == null)
             {
                 Console.WriteLine($"no transaction specified");
-                return TR.exit((Transaction)null);
+                return TR.Exit((Transaction)null);
             }
             ContractParametersContext context;
 
@@ -100,7 +100,7 @@ namespace Neo.Shell
             {
                 Console.WriteLine($"unsynchronized block");
 
-                return TR.exit((Transaction)null);
+                return TR.Exit((Transaction)null);
             }
 
             current_wallet.Sign(context);
@@ -114,7 +114,7 @@ namespace Neo.Shell
 
                 if (relay_result)
                 {
-                    return TR.exit(tx);
+                    return TR.Exit(tx);
                 }
                 else
                 {
@@ -126,7 +126,7 @@ namespace Neo.Shell
                 Console.WriteLine($"Incomplete Signature: {context.ToString()}");
             }
 
-            return TR.exit((Transaction)null);
+            return TR.Exit((Transaction)null);
         }
     }
 }

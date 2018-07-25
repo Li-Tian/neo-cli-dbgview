@@ -17,20 +17,20 @@ namespace Neo.Services
 
 		protected virtual bool OnCommand(string[] args)
         {
-            TR.enter();
+            TR.Enter();
             switch (args[0].ToLower())
             {
                 case "clear":
                     Console.Clear();
-                    return TR.exit(true);
+                    return TR.Exit(true);
                 case "exit":
-                    return TR.exit(false);
+                    return TR.Exit(false);
                 case "version":
                     Console.WriteLine(Assembly.GetEntryAssembly().GetName().Version);
-                    return TR.exit(true);
+                    return TR.Exit(true);
                 default:
                     Console.WriteLine("error");
-                    return TR.exit(true);
+                    return TR.Exit(true);
             }
         }
 
@@ -40,7 +40,7 @@ namespace Neo.Services
 
         public static string ReadPassword(string prompt)
         {
-            TR.enter();
+            TR.Enter();
             const string t = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
             StringBuilder sb = new StringBuilder();
             ConsoleKeyInfo key;
@@ -68,12 +68,12 @@ namespace Neo.Services
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
-            return TR.exit(sb.ToString());
+            return TR.Exit(sb.ToString());
         }
 
         public static SecureString ReadSecureString(string prompt)
         {
-            TR.enter();
+            TR.Enter();
             const string t = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
             SecureString securePwd = new SecureString();
             ConsoleKeyInfo key;
@@ -102,21 +102,21 @@ namespace Neo.Services
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
             securePwd.MakeReadOnly();
-            return TR.exit(securePwd);
+            return TR.Exit(securePwd);
         }
 
         public void Run(string[] args)
         {
-            TR.enter();
+            TR.Enter();
             OnStart(args);
             RunConsole();
             OnStop();
-            TR.exit();
+            TR.Exit();
         }
 
         private void RunConsole()
         {
-            TR.enter();
+            TR.Enter();
             bool running = true;
 #if NET461
             Console.Title = ServiceName;
@@ -158,7 +158,7 @@ namespace Neo.Services
             }
 
             Console.ResetColor();
-            TR.exit();
+            TR.Exit();
         }
     }
 }
