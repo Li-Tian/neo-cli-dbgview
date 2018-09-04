@@ -1,4 +1,4 @@
-﻿using DbgViewTR;
+﻿using NoDbgViewTR;
 using Neo.Shell;
 using Neo.Wallets;
 using System;

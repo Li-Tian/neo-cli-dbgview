@@ -1,4 +1,4 @@
-﻿using DbgViewTR;
+﻿using NoDbgViewTR;
 using System;
 using System.Reflection;
 using System.Security;

@@ -1,4 +1,4 @@
-﻿using DbgViewTR;
+﻿using NoDbgViewTR;
 using Microsoft.Extensions.Configuration;
 using Neo.Network;
 

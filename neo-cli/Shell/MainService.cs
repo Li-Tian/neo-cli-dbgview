@@ -1,4 +1,4 @@
-﻿using DbgViewTR;
+﻿using NoDbgViewTR;
 using Neo.Consensus;
 using Neo.Core;
 using Neo.Implementations.Blockchains.LevelDB;
